@@ -58,11 +58,11 @@ class OurPlayer(agent.Agent):
                         # print(f' discount from hand')
                         k[player_card[0]][player_card[1] - 1] -= 1
             
-            # # Discount stuff we can see on the board
-            # for played_card in unplayable_cards:
-            #     if k[played_card.color][played_card.rank] > 0:
-            #         print(' discount from board')
-            #         k[played_card.color][played_card.rank] -= 1
+            # Discount stuff we can see on the board
+            for played_card in unplayable_cards:
+                if k[played_card.color][played_card.rank - 1] > 0:
+                    # print(' discount from board')
+                    k[played_card.color][played_card.rank - 1] -= 1
             
             # Save adjusted
             my_informed_knowledge[i] = k
