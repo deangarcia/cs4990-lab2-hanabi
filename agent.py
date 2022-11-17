@@ -5,6 +5,7 @@ class Agent:
         self.name = name
         self.explanation = []
     def get_action(self, nr, hands, knowledge, trash, played, board, valid_actions, hints, hits, cards_left):
+        # CODE HERE
         return random.choice(valid_actions)
     def inform(self, action, player):
         pass

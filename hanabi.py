@@ -33,7 +33,7 @@ class Card:
         return str((self.color,self.rank))
         
     def is_useless(self, board):
-        return board[self.color].rank + 1 >= self.rank
+        return board[self.color].rank + 1 > self.rank
         
     def is_playable(self, board):
         return board[self.color].rank + 1 == self.rank
