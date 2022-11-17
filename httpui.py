@@ -173,7 +173,7 @@ def show_game_state(game, player, turn, gid, replay=False):
             playlinks = [("Play", "/takeover/%s/%d/play/%d"%(pgid,round,i)), ("Discard", "/takeover/%s/%d/discard/%d"%(pgid,round,i))]
         if game.done() or not game.started:
             playlinks = []
-        return unknown_card_image(playlinks, highlight)
+        return make_card_image(card, playlinks, highlight)
     yourcards = []
     for i,c in enumerate(game.hands[1]):
         if game.done():
