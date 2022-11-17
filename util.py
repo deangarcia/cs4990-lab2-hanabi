@@ -1,13 +1,16 @@
 from hanabi import *
 
+# Is this card definitely playable
 def is_playable(knowledge, board):
     possible = get_possible(knowledge)
     return all(map(playable(board), possible))
-    
+
+# Is this card possibly playable
 def maybe_playable(knowledge, board):
     possible = get_possible(knowledge)
     return any(map(playable(board), possible))
-    
+
+# Is this card definitely not playable
 def is_useless(knowledge, board):
     possible = get_possible(knowledge)
     return all(map(useless(board), possible))
@@ -24,6 +27,7 @@ def may_have_property(predicate, knowledge):
     possible = get_possible(knowledge)
     return any(map(predicate, possible))
 
+# Predicate can be playable(board), useless(board), rank(rank), color(color)
 def probability(predicate, knowledge):
     num = 0.0
     denom = 0.0
@@ -64,3 +68,8 @@ def get_possible(knowledge):
     
 def filter_actions(type, actions):
     return [act for act in actions if act.type == type]
+
+def probability_is_card(knowledge, card):
+    num = knowledge[card.color][card.rank - 1]
+    denom = sum(sum(knowledge, []))
+    return num / denom
