@@ -102,13 +102,35 @@ class OurPlayer(agent.Agent):
             
             hinttype = [HINT_COLOR, HINT_RANK]
             
-            
             for h in self.hints[(player,card_index)]:
                 hinttype.remove(h)
             
             t = None
             if hinttype:
-                t = random.choice(hinttype)
+                if len(hinttype) == 2:
+                    color_count = [0,0,0,0,0]
+                    max_color_count = 0
+                    max_color = 0
+
+                    same_rank = 0
+
+                    for i,card in enumerate(hands[player]):
+                        color_count[card.color] = color_count[card.color] + 1
+                        if card.rank == real_rank:
+                            same_rank = same_rank + 1
+                        if color_count[card.color] > max_color_count:
+                            max_color_count = color_count[card.color]
+                            max_color = card.color
+
+                    if max_color == real_color:
+                        if same_rank > 1:
+                            t = hinttype[HINT_COLOR]
+                        else:
+                            t = hinttype[HINT_RANK]
+                    else: 
+                        t = hinttype[HINT_COLOR]
+                else:
+                    t = random.choice(hinttype)
             
             if t == HINT_RANK:
                 for i,card in enumerate(hands[player]):
@@ -126,7 +148,31 @@ class OurPlayer(agent.Agent):
         # Step 4
         if hints > 0:
             hints = util.filter_actions(HINT_COLOR, valid_actions) + util.filter_actions(HINT_RANK, valid_actions)
+
             hintgiven = random.choice(hints)
+
+            rank_count = [0,0,0,0,0]
+            max_rank_count = 0
+            max_rank = 0
+            min_rank = 0
+            min_rank_count = 5
+            
+            for i,card in enumerate(hands[hintgiven.player]):
+                rank_count[card.rank - 1] = rank_count[card.rank - 1] + 1
+                if rank_count[card.rank - 1] > max_rank_count:
+                    max_rank_count = rank_count[card.rank - 1]
+                    max_rank = card.rank
+                if rank_count[card.rank - 1] < min_rank_count:
+                    min_rank_count = rank_count[card.rank - 1]
+                    min_rank = card.rank
+
+
+            for hint in hints:
+                if hint.rank is not None:
+                    if hint.rank == max_rank:
+                        hintgiven = hint
+                    
+
             if hintgiven.type == HINT_COLOR:
                 for i,card in enumerate(hands[hintgiven.player]):
                     if card.color == hintgiven.color:
